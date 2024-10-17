@@ -51,8 +51,9 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        use: ['babel-loader']
+        // exclude: /node_modules/, // 排除node_modules代码不编译
+        include: path.resolve(__dirname, "../src"), // 也可以用包含
+        loader: "babel-loader",
       }
     ]
   },
@@ -60,6 +61,7 @@ module.exports = {
     new ESLintWebpackPlugin({
       // 指定检查文件的根目录
       context: path.resolve(__dirname, "../src"),
+      exclude: "node_modules", // 默认值
     }),
     new HtmlWebpackPlugin({
       // 指定模板文件
@@ -68,6 +70,8 @@ module.exports = {
   ],
   devServer: {
     port: 3000,
+    hot: true
   },
-  mode: 'development'
+  mode: 'development',
+  devtool: 'cheap-module-source-map'
 }
